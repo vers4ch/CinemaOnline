@@ -54,28 +54,28 @@ mc *addElement(mc *lst, int id, char *title, int year, char *country, char *genr
 }
 
 mc * delElement(mc *lst){  //Deleting element
-  mc *prev, *next;
-  prev = lst->prev; // узел, предшествующий lst
-  next = lst->next; // узел, следующий за lst
-  if (prev != NULL)
-    prev->next = lst->next; // переставляем указатель
-  if (next != NULL)
-    next->prev = lst->prev; // переставляем указатель
-  free(lst); // освобождаем память удаляемого элемента
-  return(prev);
+    mc *prev, *next;
+    prev = lst->prev; // узел, предшествующий lst
+    next = lst->next; // узел, следующий за lst
+    if (prev != NULL)
+        prev->next = lst->next; // переставляем указатель
+    if (next != NULL)
+        next->prev = lst->prev; // переставляем указатель
+    free(lst); // освобождаем память удаляемого элемента
+    return(prev);
 }
 
 mc *deletAll(mc *root){  //clean RAM
-  mc *temp;
-  temp = root->next;
-  temp->prev = NULL;
-  free(root);   // освобождение памяти текущего корня
-  return(temp); // новый корень списка
+    mc *temp;
+    temp = root->next;
+    temp->prev = NULL;
+    free(root);   // освобождение памяти текущего моста
+    return(temp); // новый мост списка
 }
 
 void listprint(mc *lst){  //Printing card
-  mc *p;
-  p = lst;
+    mc *p;
+    p = lst;
     do {
         printf("ID: %d\nTitle: %s\nYear: %d\nCountry: %s\nGenre: %s\nRating: %.1f\n\n", p->id, p->title, p->year, p->country, p->genre, p->rating); // вывод значения элемента p
         p = p->next; // переход к следующему узлу
@@ -84,7 +84,6 @@ void listprint(mc *lst){  //Printing card
 }
 
 void listprintr(mc *lst){
-    
     mc *p;
     p = lst;
     while (p->next != NULL)
@@ -96,12 +95,33 @@ void listprintr(mc *lst){
     while (p != NULL); // условие окончания обхода
 }
 
+void step(mc *lst){
+    mc *p;
+    p = lst;
+    while (p->next != NULL)
+        p = p->next;  // переход к концу списка
+    for (int i = 0; i<1; i++){
+        printf("ID: %d\nTitle: %s\nYear: %d\nCountry: %s\nGenre: %s\nRating: %.1f\n\n", p->id, p->title, p->year, p->country, p->genre, p->rating); // вывод значения элемента p
+        p = p->prev; // переход к предыдущему узлу
+    }
+}
+
 int main(){
+    char key;
     mc *card = init(0, "Форрест Гамп", 1994, "США", "драма, мелодрама", 8.9);
     addElement(card, 1, "Валли", 2008, "США", "Мультфильмы", 9.2);
     addElement(card, 2, "Список Шиндлера", 1993, "США", "драма, биография", 8.8);
-    listprint(card);
     printf("==============\n");
-    listprintr(card);
+    while (1) {
+        scanf("%c", &key);
+        if(key=='a'){
+            system("clear");
+            listprint(card);
+        }
+        if(key=='d'){
+            system("clear");
+            step(card);
+        }
+    }
     return 0;
 }
